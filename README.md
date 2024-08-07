@@ -3,6 +3,11 @@
 - Sebastián Chávarry
 - Joaquín Teves
 
+## Arquitectura
+
+## Descripcion de la solucion
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
