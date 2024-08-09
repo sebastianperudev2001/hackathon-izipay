@@ -10,6 +10,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
+import Charts from "./Charts";
 
 const Dashboard = () => {
   const links = [
@@ -81,7 +82,7 @@ const Dashboard = () => {
           </div>
         </SidebarBody>
       </Sidebar>
-      <DashboardDummy />
+      <Charts />
     </div>
   );
 };
