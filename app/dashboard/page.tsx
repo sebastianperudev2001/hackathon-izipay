@@ -8,7 +8,9 @@ import React from "react";
 const page = () => {
   return (
     <>
-      <Dashboard></Dashboard>
+      <Dashboard>
+        <Charts />
+      </Dashboard>
       <Chatbot></Chatbot>
     </>
   );
