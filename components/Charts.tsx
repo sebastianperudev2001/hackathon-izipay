@@ -5,6 +5,7 @@ import PieChartPlot from "./recharts/PieChartPlot";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import ChangingProgressProvider from "./recharts/ChangingProgressProvider";
+import Board from "./Board";
 
 const Charts = () => {
   const percentage = 66;
@@ -49,7 +50,9 @@ const Charts = () => {
 
         {/* Second section */}
         <div className="flex gap-2 flex-1">
-          <div className="w-full h-full rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
+          <div className="w-full h-full rounded-lg bg-gray-100 dark:bg-neutral-800">
+            <Board />
+          </div>
           <div className="w-full h-full rounded-lg bg-gray-100 dark:bg-neutral-800">
             <BarChartPlot />
           </div>
