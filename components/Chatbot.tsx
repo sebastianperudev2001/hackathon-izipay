@@ -113,7 +113,7 @@ const Chatbot: React.FC = () => {
           <img
             src="izipay.png"
             alt="Chat Icon"
-            className="w-full h-12 mx-auto"
+            className="w-50 h-12 mx-auto"
           />
         </button>
       )}
