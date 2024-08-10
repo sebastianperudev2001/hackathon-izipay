@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Chart, registerables } from "chart.js";
-import axios from "axios";
 import "./Chat.css";
 import html2canvas from "html2canvas";
 import Header from "./chat/Header";
@@ -17,22 +16,16 @@ interface Message {
   type?: "chart";
   data?: any;
 }
+const API_URL = "https://o3cymx4ff8.execute-api.us-east-1.amazonaws.com/api/";
 
 const useMessages = (initial = []) => {
-  const [messages, setMessages] = useState(() => {
-    const storedMessages = localStorage.getItem("messages");
-    return storedMessages ? JSON.parse(storedMessages) : initial;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("messages", JSON.stringify(messages));
-  }, [messages]);
+  const [messages, setMessages] = useState(initial);
 
   return [messages, setMessages];
 };
 
 const Chat: React.FC = () => {
-  const [messages, setMessages] = useMessages();
+  const [messages, setMessages] = useMessages([]);
   const [input, setInput] = useState<string>("");
 
   const downloadChart = (chartId: string) => {
@@ -62,28 +55,78 @@ const Chat: React.FC = () => {
 
   const sendTextMessage = async (text: string) => {
     try {
-      const response = await axios.post("/api/message", { message: text });
-      const replyMessage: Message = { text: response.data.reply, from: "Bot" };
+      console.log("Sending message:", text);
+
+      // Perform the POST request using fetch
+      const response = await fetch(`${API_URL}charts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: text }),
+      });
+
+      // Check if response is OK (status in the range 200-299)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      const data = await response.json();
+
+      console.log("Received response:", data);
+
+      // Create reply message
+      const replyMessage: Message = { text: data.reply, from: "Bot" };
+
+      // Update messages state
       setMessages((messages: any) => [...messages, replyMessage]);
     } catch (error) {
-      console.error("Failed to send message", error);
+      // Log the error
+      console.error("Failed to send message:", error);
     }
   };
 
   const fetchStatistics = async (query: string) => {
     try {
-      const response = await axios.post("/api/statistics", { query });
+      console.log("Sending request to /api/statistics with query:", query);
+
+      // Perform the POST request using fetch
+      const response = await fetch(`${API_URL}charts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      // Check if response is OK (status in the range 200-299)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      const data = await response.json();
+
+      console.log("Received response:", data);
+
+      // Check if response data has the expected structure
+      if (!data.labels || !data.datasets) {
+        throw new Error("Unexpected response data structure");
+      }
+
+      // Prepare chart data
       const chartData = {
-        labels: response.data.labels,
+        labels: data.labels,
         datasets: [
           {
-            label: response.data.datasets[0].label,
-            data: response.data.datasets[0].data,
-            backgroundColor: response.data.datasets[0].data.map(
+            label: data.datasets[0].label,
+            data: data.datasets[0].data,
+            backgroundColor: data.datasets[0].data.map(
               (value: number) =>
                 `rgba(${value % 255}, ${100 + (value % 155)}, 132, 0.6)`
             ),
-            borderColor: response.data.datasets[0].data.map(
+            borderColor: data.datasets[0].data.map(
               (value: number) =>
                 `rgba(${value % 255}, ${100 + (value % 155)}, 132, 1)`
             ),
@@ -91,15 +134,22 @@ const Chat: React.FC = () => {
           },
         ],
       };
+
+      // Create chart message
       const chartMessage: Message = {
         type: "chart",
         data: chartData,
         from: "Bot",
         text: "",
       };
+
+      // Update messages state
       setMessages((messages: any) => [...messages, chartMessage]);
     } catch (error) {
+      // Log the error
       console.error("Failed to fetch statistics:", error);
+
+      // Update messages state with error message
       setMessages((messages: any) => [
         ...messages,
         { text: "Failed to fetch statistics", from: "Bot" },
