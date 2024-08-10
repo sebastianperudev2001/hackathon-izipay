@@ -1,4 +1,4 @@
-// components/MedalsPage.js
+// components/Medals.tsx
 
 "use client"; // Asegúrate de agregar esto al principio del archivo
 
@@ -118,7 +118,7 @@ const MedalsPage = () => {
         </div>
         <div className="medals-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {medals.map((medal) => {
-            const percentage = fixedPercentages[medal.title];
+            const percentage = fixedPercentages[medal.title as keyof typeof fixedPercentages];
             const cardColor = percentage === 100 ? medal.color : "bg-gray-400 dark:bg-gray-900";
             return (
               <GlareCard key={medal.id} className={`${cardColor} flex flex-col items-start justify-center p-4 rounded-lg`}>
