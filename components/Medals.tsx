@@ -16,6 +16,18 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 
+// Porcentajes fijos para cada medalla
+const fixedPercentages = {
+  "Medalla al Mayor Volumen de Ventas": 9,
+  "Medalla al Crecimiento en Ventas": 79,
+  "Medalla a la Mayor Frecuencia de Transacciones": 100,
+  "Medalla a la Venta Promedio Más Alta": 87,
+  "Medalla a la Retención de Clientes": 27,
+  "Medalla al Ticket Promedio Creciente": 18,
+  "Medalla a la Diversificación de Productos/Servicios": 77,
+  "Medalla a la Rentabilidad por Transacción": 29,
+};
+
 const medals = [
   { id: 1, title: "Medalla al Mayor Volumen de Ventas", description: "Otorgada al establecimiento que ha generado el mayor volumen de ventas en un período determinado.", color: "bg-red-900" },
   { id: 2, title: "Medalla al Crecimiento en Ventas", description: "Para el negocio que ha mostrado el mayor incremento en sus ventas respecto al período anterior.", color: "bg-orange-900" },
@@ -28,6 +40,8 @@ const medals = [
 ];
 
 const MedalsPage = () => {
+  const [open, setOpen] = useState(false); // Definir el estado 'open' y la función 'setOpen'
+
   const links = [
     {
       label: "Transacciones",
@@ -66,8 +80,6 @@ const MedalsPage = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="flex flex-col md:flex-row bg-gray-900 dark:bg-black w-full flex-1 h-screen border border-neutral-200 dark:border-neutral-700 overflow-hidden">
       <Sidebar open={open} setOpen={setOpen}>
@@ -105,12 +117,23 @@ const MedalsPage = () => {
           <h2 className="text-black dark:text-white text-lg">Colección de Medallas</h2>
         </div>
         <div className="medals-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {medals.map((medal) => (
-            <GlareCard key={medal.id} className={`${medal.color} flex flex-col items-start justify-center p-4 rounded-lg`}>
-              <h3 className="font-bold text-lg text-white">{medal.title}</h3>
-              <p className="text-sm text-neutral-200 mt-2">{medal.description}</p>
-            </GlareCard>
-          ))}
+          {medals.map((medal) => {
+            const percentage = fixedPercentages[medal.title];
+            const cardColor = percentage === 100 ? medal.color : "bg-gray-400 dark:bg-gray-900";
+            return (
+              <GlareCard key={medal.id} className={`${cardColor} flex flex-col items-start justify-center p-4 rounded-lg`}>
+                <h3 className="font-bold text-lg text-white">{medal.title}</h3>
+                <p className="text-sm text-neutral-200 mt-2">{medal.description}</p>
+                <div className="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-4 mt-4">
+                  <div
+                    className="bg-blue-600 h-4 rounded-full"
+                    style={{ width: `${percentage}%` }}
+                  ></div>
+                </div>
+                <p className="text-sm text-neutral-200 mt-2">{percentage}%</p>
+              </GlareCard>
+            );
+          })}
         </div>
       </div>
     </div>
