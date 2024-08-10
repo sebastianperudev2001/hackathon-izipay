@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 
 // Porcentajes fijos para cada medalla
-const fixedPercentages = {
+const fixedPercentages: { [key: string]: number } = {
   "Medalla al Mayor Volumen de Ventas": 9,
   "Medalla al Crecimiento en Ventas": 79,
   "Medalla a la Mayor Frecuencia de Transacciones": 100,
@@ -29,14 +29,62 @@ const fixedPercentages = {
 };
 
 const medals = [
-  { id: 1, title: "Medalla al Mayor Volumen de Ventas", description: "Otorgada al establecimiento que ha generado el mayor volumen de ventas en un período determinado.", color: "bg-red-900" },
-  { id: 2, title: "Medalla al Crecimiento en Ventas", description: "Para el negocio que ha mostrado el mayor incremento en sus ventas respecto al período anterior.", color: "bg-orange-900" },
-  { id: 3, title: "Medalla a la Mayor Frecuencia de Transacciones", description: "Reconocimiento al establecimiento con la mayor cantidad de transacciones realizadas en un período específico.", color: "bg-yellow-900" },
-  { id: 4, title: "Medalla a la Venta Promedio Más Alta", description: "Otorgada al negocio que ha logrado la venta promedio más alta por transacción.", color: "bg-amber-900" },
-  { id: 5, title: "Medalla a la Retención de Clientes", description: "Para el establecimiento que ha demostrado la mayor tasa de clientes recurrentes basándose en sus transacciones.", color: "bg-gray-800" },
-  { id: 6, title: "Medalla al Ticket Promedio Creciente", description: "Reconocimiento al establecimiento que ha mostrado un crecimiento en el valor promedio de sus transacciones.", color: "bg-purple-900" },
-  { id: 7, title: "Medalla a la Diversificación de Productos/Servicios", description: "Otorgada al negocio que ha incrementado su variedad de productos o servicios, reflejado en la diversidad de sus transacciones.", color: "bg-green-900" },
-  { id: 8, title: "Medalla a la Rentabilidad por Transacción", description: "Para el establecimiento que ha demostrado una alta rentabilidad por cada transacción, considerando el margen de ganancia.", color: "bg-blue-900" },
+  {
+    id: 1,
+    title: "Medalla al Mayor Volumen de Ventas",
+    description:
+      "Otorgada al establecimiento que ha generado el mayor volumen de ventas en un período determinado.",
+    color: "bg-red-900",
+  },
+  {
+    id: 2,
+    title: "Medalla al Crecimiento en Ventas",
+    description:
+      "Para el negocio que ha mostrado el mayor incremento en sus ventas respecto al período anterior.",
+    color: "bg-orange-900",
+  },
+  {
+    id: 3,
+    title: "Medalla a la Mayor Frecuencia de Transacciones",
+    description:
+      "Reconocimiento al establecimiento con la mayor cantidad de transacciones realizadas en un período específico.",
+    color: "bg-yellow-900",
+  },
+  {
+    id: 4,
+    title: "Medalla a la Venta Promedio Más Alta",
+    description:
+      "Otorgada al negocio que ha logrado la venta promedio más alta por transacción.",
+    color: "bg-amber-900",
+  },
+  {
+    id: 5,
+    title: "Medalla a la Retención de Clientes",
+    description:
+      "Para el establecimiento que ha demostrado la mayor tasa de clientes recurrentes basándose en sus transacciones.",
+    color: "bg-gray-800",
+  },
+  {
+    id: 6,
+    title: "Medalla al Ticket Promedio Creciente",
+    description:
+      "Reconocimiento al establecimiento que ha mostrado un crecimiento en el valor promedio de sus transacciones.",
+    color: "bg-purple-900",
+  },
+  {
+    id: 7,
+    title: "Medalla a la Diversificación de Productos/Servicios",
+    description:
+      "Otorgada al negocio que ha incrementado su variedad de productos o servicios, reflejado en la diversidad de sus transacciones.",
+    color: "bg-green-900",
+  },
+  {
+    id: 8,
+    title: "Medalla a la Rentabilidad por Transacción",
+    description:
+      "Para el establecimiento que ha demostrado una alta rentabilidad por cada transacción, considerando el margen de ganancia.",
+    color: "bg-blue-900",
+  },
 ];
 
 const MedalsPage = () => {
@@ -114,16 +162,26 @@ const MedalsPage = () => {
 
       <div className="flex-1 flex flex-col items-center justify-center p-4 bg-gray-900 dark:bg-black">
         <div className="bg-gray-200 dark:bg-gray-700 text-center py-2 px-4 rounded-full w-full max-w-md mb-8">
-          <h2 className="text-black dark:text-white text-lg">Colección de Medallas</h2>
+          <h2 className="text-black dark:text-white text-lg">
+            Colección de Medallas
+          </h2>
         </div>
         <div className="medals-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {medals.map((medal) => {
+            const percentage = fixedPercentages[medal.title];
+            const cardColor =
+              percentage === 100 ? medal.color : "bg-gray-400 dark:bg-gray-900";
             const percentage = fixedPercentages[medal.title as keyof typeof fixedPercentages];
             const cardColor = percentage === 100 ? medal.color : "bg-gray-400 dark:bg-gray-900";
             return (
-              <GlareCard key={medal.id} className={`${cardColor} flex flex-col items-start justify-center p-4 rounded-lg`}>
+              <GlareCard
+                key={medal.id}
+                className={`${cardColor} flex flex-col items-start justify-center p-4 rounded-lg`}
+              >
                 <h3 className="font-bold text-lg text-white">{medal.title}</h3>
-                <p className="text-sm text-neutral-200 mt-2">{medal.description}</p>
+                <p className="text-sm text-neutral-200 mt-2">
+                  {medal.description}
+                </p>
                 <div className="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-4 mt-4">
                   <div
                     className="bg-blue-600 h-4 rounded-full"
