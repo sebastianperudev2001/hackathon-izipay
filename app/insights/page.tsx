@@ -2,6 +2,7 @@
 
 import Chatbot from "@/components/Chatbot";
 import Dashboard from "@/components/Dashboard";
+import Medals from "@/components/Medals";
 import React from "react";
 
 const page = () => {
@@ -10,6 +11,7 @@ const page = () => {
       <Dashboard>
         <DashboardDummy />
       </Dashboard>
+      <Medals></Medals>
       <Chatbot></Chatbot>
     </>
   );
