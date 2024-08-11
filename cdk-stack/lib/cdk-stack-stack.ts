@@ -17,6 +17,7 @@ export class CdkStackStack extends cdk.Stack {
       "ApiGateway",
       lambdaFunctionsSetup.generateGraphs,
       lambdaFunctionsSetup.generateAnswer
+      //probando
     );
   }
 }
