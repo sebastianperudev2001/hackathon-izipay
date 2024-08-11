@@ -12,6 +12,7 @@ import {
 export function SignupFormDemo() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    window.location.href = "/dashboard";
     console.log("Form submitted");
   };
   return (

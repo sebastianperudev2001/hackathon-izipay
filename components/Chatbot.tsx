@@ -14,38 +14,47 @@ const Chatbot: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleSendMessage = () => {
+  const API_URL = "https://o3cymx4ff8.execute-api.us-east-1.amazonaws.com/api/";
+
+  const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
 
     const userMessage = { type: "visitor" as const, text: inputMessage };
     setMessages([...messages, userMessage]);
     setInputMessage("");
 
-    // TODO: LLAMAR LAMBDA PARA OBTENER RESPUESTA
-    const fullResponse = "Hello! How can I assist you today?";
-    let currentText = "";
-    let i = 0;
+    try {
+      // Call the Lambda function with the inputMessage as the body
+      const response = await fetch(`${API_URL}messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: inputMessage }),
+      });
 
-    // Add an initial empty operator message to start streaming
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { type: "operator" as const, text: currentText },
-    ]);
-
-    const interval = setInterval(() => {
-      if (i < fullResponse.length) {
-        currentText += fullResponse[i];
-        i++;
-
-        // Update the last message (operator's message) in the messages array
-        setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1),
-          { type: "operator" as const, text: currentText },
-        ]);
-      } else {
-        clearInterval(interval);
+      // Check if the response is ok
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-    }, 20); // Adjust the speed of the streaming by changing the interval time
+
+      // Get the response from the Lambda function
+      const data = await response.json();
+      const fullResponse = data.result || "Sorry, I couldn't get a response.";
+
+      // Add the operator's response to the messages array
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "operator" as const, text: fullResponse },
+      ]);
+    } catch (error) {
+      console.error("Error calling Lambda function:", error);
+      // Handle the error appropriately
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "operator" as const, text: "Sorry, something went wrong." },
+      ]);
+    }
   };
 
   return (
@@ -110,11 +119,7 @@ const Chatbot: React.FC = () => {
           onClick={handleToggleChatbox}
           className="bg-white p-3 rounded-full shadow-lg"
         >
-          <img
-            src="izipay.png"
-            alt="Chat Icon"
-            className="w-50 h-12 mx-auto"
-          />
+          <img src="izipay.png" alt="Chat Icon" className="w-50 h-12 mx-auto" />
         </button>
       )}
     </div>
