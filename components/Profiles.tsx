@@ -22,18 +22,18 @@ const Item = (data: LeaderboardEntry[]) => {
     <>
       {data.map((value, index) => (
         <div className="flex justify-between gap-4 text-left mb-8" key={index}>
-          <div className="flex items-center">
+          <div className="flex items-center ml-10">
             <img
               src={value.img}
               alt={value.name}
-              className="w-1/5 rounded-full"
+              className="w-1/5 rounded-full "
             />
             <div className="p-4">
               <h3 className="text-emerald-300">{value.name}</h3>
               <span className="text-blue-200">{value.location}</span>
             </div>
           </div>
-          <div className="flex items-center text-red-500">
+          <div className="flex items-center text-red-500 mr-10">
             <span>{value.score}</span>
           </div>
         </div>

@@ -19,7 +19,7 @@ const Charts = () => {
               <p className="text-gray-900 dark:text-white font-bold">
                 Ventas totales semanales
               </p>
-              <p className="py-1 font-bold">$30,000</p>
+              <p className="py-1 font-bold dark:text-white">$30,000</p>
             </div>
           </div>
           <div className="flex-1 h-21 w-full rounded-lg bg-gray-100 dark:bg-neutral-800">
@@ -27,7 +27,7 @@ const Charts = () => {
               <p className="text-gray-900 dark:text-white font-bold">
                 Comisiones totales semanales
               </p>
-              <p className="py-1 font-bold">$30,000</p>
+              <p className="py-1 font-bold dark:text-white">$30,000</p>
             </div>
           </div>
           <div className="flex-1 h-21 w-full rounded-lg bg-gray-100 dark:bg-neutral-800">
@@ -35,7 +35,7 @@ const Charts = () => {
               <p className="text-gray-900 dark:text-white font-bold">
                 Ventas totales diarias
               </p>
-              <p className="py-1 font-bold">$30,000</p>
+              <p className="py-1 font-bold dark:text-white">$30,000</p>
             </div>
           </div>
           <div className="flex-1 h-21 w-full rounded-lg bg-gray-100 dark:bg-neutral-800">
@@ -43,7 +43,7 @@ const Charts = () => {
               <p className="text-gray-900 dark:text-white font-bold">
                 Comisiones totales diarias
               </p>
-              <p className="py-1 font-bold">$30,000</p>
+              <p className="py-1 font-bold dark:text-white">$30,000</p>
             </div>
           </div>
         </div>
@@ -60,11 +60,11 @@ const Charts = () => {
 
         {/* Third section */}
         <div className="flex gap-2">
-          <div className="w-1/3 h-[280px] rounded-lg bg-gray-100 dark:bg-neutral-800">
+          <div className="w-1/2 h-[280px] rounded-lg bg-gray-100 dark:bg-neutral-800">
             <PieChartPlot />
           </div>
-          <div className="w-1/3 h-[280px] rounded-lg bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
-            <div className="w-[40%] h-[80%]">
+          <div className="w-1/2 h-[280px] rounded-lg bg-gray-100 dark:bg-neutral-800 flex  justify-center">
+            <div className="w-45 h-full mt-5 mb-5">
               <ChangingProgressProvider
                 values={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
               >
@@ -83,7 +83,6 @@ const Charts = () => {
               </ChangingProgressProvider>
             </div>
           </div>
-          <div className="w-1/3 h-[280px] rounded-lg bg-gray-100 dark:bg-neutral-800"></div>
         </div>
       </div>
     </div>
